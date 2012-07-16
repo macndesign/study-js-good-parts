@@ -3,6 +3,70 @@
 <head>
     <title>Javascript: Good Parts - Study 1</title>
     <script type="text/javascript">
+    
+    // Objetos
+    
+    var empty_object = {};
+    
+    var stooge = {
+        "first-name": "Jerome",
+        "last-name": "Howard"
+    };
+    
+    var flight = {
+        airline: "Oceanic",
+        number: 815,
+        departure: {
+            IATA: "SYD",
+            time: "2004-09-22 14:55",
+            city: "Sydney"
+        },
+        arrival: {
+            IATA: "LAX",
+            time: "2004-09-23 10:42",
+            city: "Los Angeles"
+        }
+    };
+    
+    // Recuperação
+    
+    console.log( stooge["first-name"] ); // Jerome
+    console.log( flight.departure.IATA ); // SYD
+    // undefined
+    console.log( stooge["middle-name"] ); // undefined
+    console.log( flight.status ); // undefined
+    console.log( stooge["FIRST-NAME"] ); // undefined
+    // ussando o || para retornar valor padrão
+    var middle = stooge["middle-name"] || "(none)";
+    console.log( middle ); // none
+    var status = flight.status || "undefined";
+    console.log( status );
+    // Prevenindo TypeError com &&
+    console.log( flight.equipment ); // undefined
+    // console.log( flight.equipment.model ); // lança o TypeError
+    console.log( flight.equipment && flight.equipment.model ); // undefined
+    
+    // Atualização
+    
+    stooge["first-name"] = "Jerome";
+    console.log( stooge["first-name"] );
+    // Acrescentando propriedade
+    stooge["middle-name"] = "Lester";
+    console.log( stooge["middle-name"] ); // Lester
+    stooge.nickname = "Curly";
+    console.log( stooge.nickname ); // Curly
+    flight.equipment = {
+        model: "Boeing 777"
+    };
+    console.log( flight.equipment.model ); // Boeing 777
+    flight.status = "overdue";
+    console.log( flight.status ); // overdue
+    
+    // Referência
+    
+    // TODO: Copiar os exemplos
+    
+    
     </script>
 </head>
 <body>
