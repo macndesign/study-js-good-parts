@@ -28,6 +28,8 @@
         }
     };
     
+    
+    
     // Recuperação
     
     console.log( stooge["first-name"] ); // Jerome
@@ -46,6 +48,8 @@
     // console.log( flight.equipment.model ); // lança o TypeError
     console.log( flight.equipment && flight.equipment.model ); // undefined
     
+    
+    
     // Atualização
     
     stooge["first-name"] = "Jerome";
@@ -62,10 +66,64 @@
     flight.status = "overdue";
     console.log( flight.status ); // overdue
     
+    
+    
     // Referência
     
-    // TODO: Copiar os exemplos
+    var x = stooge;
+    console.log( x );
     
+    x.nickname = 'Curly';
+    console.log( x.nickname );
+    
+    var nick = stooge.nickname;
+    // nick é Curly porque x e stooge são referência ao mesmo objeto
+    console.log( nick );
+    
+    a = {}, b = {}, c = {};
+    // a, b e c referem-se cada cada um a um objeto vazio diferente
+    console.log( a + " " + b + " " + c );
+    
+    a = b = c = {};
+    // a, b e c todos referem-se ao mesmo objeto vazio
+    console.log( a + " " + b + " " + c );
+    
+    
+    
+    // Protótipos
+    
+    // Procedimento para facilitar a prototipação
+    if (typeof Object.beget !== 'function') {
+        Object.beget = function (o) {
+            var F = function () {};
+            F.prototype = o;
+            return new F();
+        };
+    }
+    
+    var another_stooge = Object.beget(stooge);
+    // Herança prototípica do objeto stooge
+    
+    another_stooge['first-name'] = 'Harry';
+    // atributo first-name do novo objeto
+    console.log( another_stooge['first-name'] );
+    
+    another_stooge['middle-name'] = 'Moses';
+    // atributo middle-name do novo objeto
+    console.log( another_stooge['middle-name'] );
+    
+    another_stooge.nickname = 'Moe';
+    // atributo nickname do novo objeto
+    console.log( another_stooge.nickname );
+    
+    stooge.profession = 'ator';
+    // setando o atributo ator no objeto stooge
+    console.log( stooge.profession );
+    
+    another_stooge.profession;
+    // como não tem nada atribuido ele pega por
+    // padrão o mesmo valor do objeto pai
+    console.log( another_stooge.profession );
     
     </script>
 </head>
