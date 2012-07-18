@@ -3,131 +3,206 @@
 <head>
     <title>Javascript: Good Parts - Study 1</title>
     <script type="text/javascript">
+
+        // Aplicando Supress√£o global nos exemplos
+        // Minimiza a quantidade de vari√°veis globais na app
+        var MYAPP = {};
+
     
-    // Objetos
-    
-    var empty_object = {};
-    
-    var stooge = {
-        "first-name": "Jerome",
-        "last-name": "Howard"
-    };
-    
-    var flight = {
-        airline: "Oceanic",
-        number: 815,
-        departure: {
-            IATA: "SYD",
-            time: "2004-09-22 14:55",
-            city: "Sydney"
-        },
-        arrival: {
-            IATA: "LAX",
-            time: "2004-09-23 10:42",
-            city: "Los Angeles"
-        }
-    };
-    
-    
-    
-    // RecuperaÁ„o
-    
-    console.log( stooge["first-name"] ); // Jerome
-    console.log( flight.departure.IATA ); // SYD
-    // undefined
-    console.log( stooge["middle-name"] ); // undefined
-    console.log( flight.status ); // undefined
-    console.log( stooge["FIRST-NAME"] ); // undefined
-    // ussando o || para retornar valor padr„o
-    var middle = stooge["middle-name"] || "(none)";
-    console.log( middle ); // none
-    var status = flight.status || "undefined";
-    console.log( status );
-    // Prevenindo TypeError com &&
-    console.log( flight.equipment ); // undefined
-    // console.log( flight.equipment.model ); // lanÁa o TypeError
-    console.log( flight.equipment && flight.equipment.model ); // undefined
-    
-    
-    
-    // AtualizaÁ„o
-    
-    stooge["first-name"] = "Jerome";
-    console.log( stooge["first-name"] );
-    // Acrescentando propriedade
-    stooge["middle-name"] = "Lester";
-    console.log( stooge["middle-name"] ); // Lester
-    stooge.nickname = "Curly";
-    console.log( stooge.nickname ); // Curly
-    flight.equipment = {
-        model: "Boeing 777"
-    };
-    console.log( flight.equipment.model ); // Boeing 777
-    flight.status = "overdue";
-    console.log( flight.status ); // overdue
-    
-    
-    
-    // ReferÍncia
-    
-    var x = stooge;
-    console.log( x );
-    
-    x.nickname = 'Curly';
-    console.log( x.nickname );
-    
-    var nick = stooge.nickname;
-    // nick È Curly porque x e stooge s„o referÍncia ao mesmo objeto
-    console.log( nick );
-    
-    a = {}, b = {}, c = {};
-    // a, b e c referem-se cada cada um a um objeto vazio diferente
-    console.log( a + " " + b + " " + c );
-    
-    a = b = c = {};
-    // a, b e c todos referem-se ao mesmo objeto vazio
-    console.log( a + " " + b + " " + c );
-    
-    
-    
-    // ProtÛtipos
-    
-    // Procedimento para facilitar a prototipaÁ„o
-    if (typeof Object.beget !== 'function') {
-        Object.beget = function (o) {
-            var F = function () {};
-            F.prototype = o;
-            return new F();
+        // Objetos
+
+        var empty_object = {};
+
+        MYAPP.stooge = {
+            "first-name": "Jerome",
+            "last-name": "Howard"
         };
-    }
-    
-    var another_stooge = Object.beget(stooge);
-    // HeranÁa prototÌpica do objeto stooge
-    
-    another_stooge['first-name'] = 'Harry';
-    // atributo first-name do novo objeto
-    console.log( another_stooge['first-name'] );
-    
-    another_stooge['middle-name'] = 'Moses';
-    // atributo middle-name do novo objeto
-    console.log( another_stooge['middle-name'] );
-    
-    another_stooge.nickname = 'Moe';
-    // atributo nickname do novo objeto
-    console.log( another_stooge.nickname );
-    
-    stooge.profession = 'ator';
-    // setando o atributo ator no objeto stooge
-    console.log( stooge.profession );
-    
-    another_stooge.profession;
-    // como n„o tem nada atribuido ele pega por
-    // padr„o o mesmo valor do objeto pai
-    console.log( another_stooge.profession );
+
+        MYAPP.flight = {
+            airline: "Oceanic",
+            number: 815,
+            departure: {
+                IATA: "SYD",
+                time: "2004-09-22 14:55",
+                city: "Sydney"
+            },
+            arrival: {
+                IATA: "LAX",
+                time: "2004-09-23 10:42",
+                city: "Los Angeles"
+            }
+        };
+
+
+
+        // Recupera√ß√£o
+
+        console.log( MYAPP.stooge["first-name"] ); // Jerome
+        console.log( MYAPP.flight.departure.IATA ); // SYD
+        // undefined
+        console.log( MYAPP.stooge["middle-name"] ); // undefined
+        console.log( MYAPP.flight.status ); // undefined
+        console.log( MYAPP.stooge["FIRST-NAME"] ); // undefined
+        // ussando o || para retornar valor padr√£o
+        var middle = MYAPP.stooge["middle-name"] || "(none)";
+        console.log( middle ); // none
+        var status = MYAPP.flight.status || "undefined";
+        console.log( status );
+        // Prevenindo TypeError com &&
+        console.log( MYAPP.flight.equipment ); // undefined
+        // console.log( flight.equipment.model ); // lan√ßa o TypeError
+        console.log( MYAPP.flight.equipment && MYAPP.flight.equipment.model ); // undefined
+
+
+
+        // Atualiza√ß√£o
+
+        MYAPP.stooge["first-name"] = "Jerome";
+        console.log( MYAPP.stooge["first-name"] );
+        // Acrescentando propriedade
+        MYAPP.stooge["middle-name"] = "Lester";
+        console.log( MYAPP.stooge["middle-name"] ); // Lester
+        MYAPP.stooge.nickname = "Curly";
+        console.log( MYAPP.stooge.nickname ); // Curly
+        MYAPP.flight.equipment = {
+            model: "Boeing 777"
+        };
+        console.log( MYAPP.flight.equipment.model ); // Boeing 777
+        MYAPP.flight.status = "overdue";
+        console.log( MYAPP.flight.status ); // overdue
+
+
+
+        // Refer√™ncia
+
+        var x = MYAPP.stooge;
+        console.log( x );
+
+        x.nickname = 'Curly';
+        console.log( x.nickname );
+
+        var nick = MYAPP.stooge.nickname;
+        // nick √© Curly porque x e stooge s√£o refer√™ncia ao mesmo objeto
+        console.log( nick );
+
+        a = {}; b = {}; c = {};
+        // a, b e c referem-se cada cada um a um objeto vazio diferente
+        console.log( a + " " + b + " " + c );
+
+        a = b = c = {};
+        // a, b e c todos referem-se ao mesmo objeto vazio
+        console.log( a + " " + b + " " + c );
+
+
+
+        // Prot√≥tipos
+
+        // Procedimento para facilitar a prototipa√ß√£o
+        if (typeof Object.beget !== 'function') {
+            Object.beget = function (o) {
+                var F = function () {};
+                F.prototype = o;
+                return new F();
+            };
+        }
+
+        var another_stooge = Object.beget(MYAPP.stooge);
+        // Heran√ßa protot√≠pica do objeto stooge
+
+        another_stooge['first-name'] = 'Harry';
+        // atributo first-name do novo objeto
+        console.log( another_stooge['first-name'] );
+
+        another_stooge['middle-name'] = 'Moses';
+        // atributo middle-name do novo objeto
+        console.log( another_stooge['middle-name'] );
+
+        another_stooge.nickname = 'Moe';
+        // atributo nickname do novo objeto
+        console.log( another_stooge.nickname );
+
+        MYAPP.stooge.profession = 'ator';
+        // setando o atributo ator no objeto stooge
+        console.log( MYAPP.stooge.profession );
+
+        another_stooge.profession;
+        // como n√£o tem nada atribuido ele pega por
+        // padr√£o o mesmo valor do objeto pai
+        console.log( another_stooge.profession );
+
+
+
+        // Reflex√£o
+
+        // Conhecendo os tipos
+        console.log( typeof MYAPP.flight.number ); // n√∫mero
+        console.log( typeof MYAPP.flight.status ); // string
+        console.log( typeof MYAPP.flight.arrival ); // objeto
+        console.log( typeof MYAPP.flight.manifest ); // undefined
+
+        // O typeoff pode trazer valores indesejados como functions
+        console.log( typeof MYAPP.flight.toString ); // function
+        console.log( typeof MYAPP.flight.constructor ); // function
+
+        // Isso pode ser prevenido fazendo-se um if !== 'function'
+        // ou utilzando o m√©todo hasOwnProperty
+        console.log( MYAPP.flight.hasOwnProperty('number') ); // true
+        console.log( MYAPP.flight.hasOwnProperty('constructor') ); // false
+
+
+
+        // Enumera√ß√£o
+
+        // Comando for ... in
+        // Usar apenas quando a ordem n√£o tiver importancia
+        var name;
+        for (name in another_stooge) {
+            if (typeof another_stooge[name] !== 'function') {
+
+                document.writeln(name + ': ' + another_stooge[name]);
+
+                // Ver no console
+                console.log(name + ': ' + another_stooge[name]);
+
+            }
+        }
+
+        // Usar o for tradicional nos outros casos,
+        // inclusive listar em ordem
+        var i;
+        var properties = [
+            'first-name',
+            'middle-name',
+            'last-name',
+            'profession'
+        ];
+        for (i = 0; i < properties.length; i += 1) {
+
+            document.writeln(properties[i] + ': ' +
+                another_stooge[properties[i]]
+            );
+
+            // Ver no console
+            console.log(properties[i] + ': ' +
+                another_stooge[properties[i]]
+            );
+        }
+
+
+
+        // Apagar
+
+        // Operador delete - N√£o sobe na cadeia protot√≠pica
+        console.log( another_stooge.nickname ); // Moe
+        delete another_stooge.nickname;
+        // Como foi excluido, ele pega do seu prot√≥tipo
+        console.log( another_stooge.nickname ); // Curly
+
+        // Aplicar Supress√£o global nos exemplos
+        // Criar um container para todas as vari√°veis da aplica√ß√£o MYAPP
     
     </script>
 </head>
 <body>
-<h1>Javascript: Good Parts - Study 1</h1>
 </body>
 </html>

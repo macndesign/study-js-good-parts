@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Javascript: Good Parts - Study 1</title>
+    <script type="text/javascript">
+
+        // Funções
+
+        // Função associada a variável
+
+        var add = function(a, b) {
+            return a + b;
+        };
+
+        console.log( add(1, 2) );
+
+
+
+        // Invocação, podem ser:
+        // método, função, construtor e aplicação
+
+
+
+        // Invocação por Método
+
+        var myObject = {
+            value: 0,
+            increment: function (inc) {
+                this.value += typeof inc === 'number' ? inc : 1;
+            }
+        };
+
+        myObject.increment();
+        document.writeln(myObject.value);
+        console.log( myObject.value ); // 1
+
+        myObject.increment(2);
+        document.writeln(myObject.value);
+        console.log( myObject.value ); // 3
+
+
+
+        // Invocação por função
+
+        // Invocada como função quando não é propriedade de um objeto
+
+        var sum = add(3, 4);
+        console.log( sum ); // 7
+
+        // Acrescenta em myObject um método double
+
+        myObject.double = function () {
+            var that = this; // Prevenindo o erro do this
+
+            var helper = function () {
+                that.value = add(that.value, that.value)
+            };
+
+            helper(); // Invoca helper como uma função
+        };
+
+        // Invoca double como um método
+
+        myObject.double();
+        document.writeln(myObject.getValue); // 7
+
+
+
+        // Invocação por construtor
+
+        // Cria uma função construtora chamada Quo.
+        // Ela cria um objeto com uma propriedade status.
+
+        // PS. Variável que será instanciada por new,
+        // por convenção iniciada com letra maiúscula
+
+        var Quo = function (string) {
+            this.status = string;
+        };
+
+        // Da a todas as intâncias do Quo um método público
+        // chamado get_status.
+
+        Quo.prototype.get_status = function () {
+            return this.status;
+        };
+
+        // Cria uma instancia de Quo.
+
+        var myQuo = new Quo("confused");
+
+        document.writeln(myQuo.get_status()); // confused
+        console.log( myQuo.get_status() );
+
+
+
+        // Invocação por aplicação
+
+        // Cria uma matriz de 2 números e soma-os
+
+        var array = [1, 2];
+        var soma = add.apply(null, array); // 3
+        console.log( soma );
+
+        // Cria um objeto com um membro status.
+
+        var statusObject = {
+            status: "A-Ok"
+        };
+
+        // statusObject não herda de myObject.prototype
+        // mas podemos invocar o método get_status em
+        // statusObject embora ele não possua esse método.
+
+        var status = Quo.prototype.get_status.apply(statusObject);
+        console.log( status ); // A-Ok
+    
+    </script>
+</head>
+<body>
+</body>
+</html>
