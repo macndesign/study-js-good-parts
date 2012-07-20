@@ -114,6 +114,107 @@
 
         var status = Quo.prototype.get_status.apply(statusObject);
         console.log( status ); // A-Ok
+        
+        
+        // Argumentos
+        
+        // Cria uma função que soma um monte de coisas
+        
+        var sum = function () {
+            var i, sum = 0;
+            for (i = 0; i < arguments.length; i += 1) {
+                sum += arguments[i];
+            }
+            return sum;
+        };
+        
+        document.writeln(sum(4, 8, 15, 16, 23, 42)); // 108
+        
+        // Retorno
+        
+        // O return força o retorno de algum valor no momento
+        // que ele é chamado, antes de chegar na chave de fechamento
+        
+        // Exceções
+        
+        // Exceção em uma função
+        
+        var add = function (a, b) {
+            if (typeof a !== 'number' || typeof b !== 'number') {
+                throw {
+                    name: 'TypeError',
+                    message: 'add needs numbers',
+                }
+            }
+            return a + b;
+        };
+        
+        document.writeln( add(1, 2) );
+        // document.writeln( add(1, 'oi') );
+        
+        // Cria uma função try_it que chama a nova função
+        // add incorretamente
+        
+        var try_it = function () {
+            try {
+                add('seven');
+            } catch (e) {
+                document.writeln(e.name + ': ' + e.message);
+            }
+        };
+        
+        try_it();
+        
+        
+        
+        // Ampliando tipos
+        
+        // Procedimento para criar métodos sem .prototype
+        
+        Function.prototype.method = function (name, func) {
+            this.prototype[name] = func;
+            return this;
+        };
+        
+        // Um tipo inteiro para javascript
+        
+        Number.method('integer', function () {
+            return Math[this < 0 ? 'ceil' : 'floor'](this);
+        });
+        
+        document.writeln((-10 / 3).integer()); // -3
+        
+        // Criando um método trim
+        // Remove espaços em branco, antes e depois da string
+        
+        String.method('trim', function () {
+            return this.replace(/^\s+|\s+$/g, '');
+        });
+        
+        // Sem trim
+        document.writeln('"' + " nest " + '"'); // " nest "
+        
+        // Com trim
+        document.writeln('"' + "   nest   ".trim() + '"'); // "nest"
+        
+        // Acrescenta um método condicionalmente.
+        
+        // Melhoramento do procedimento para criação de métodos
+        // Só acrescenta o método se ele não existir para o objeto
+        
+        Function.prototype.method = function (name, func) {
+            if (!this.prototype[name]) {
+                this.prototype[name] = func;
+            }
+        };
+        
+        // Test com trim
+        String.method('trim', function () {
+            return this
+        });
+        
+        // CO método não é alterado
+        document.writeln('"' + "   nest   ".trim() + '"'); // "nest"
     
     </script>
 </head>
