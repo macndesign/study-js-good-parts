@@ -4,217 +4,272 @@
     <title>Javascript: Good Parts - Study 1</title>
     <script type="text/javascript">
 
-        // Funções
+    // Funções
 
-        // Função associada a variável
+    // Função associada a variável
 
-        var add = function(a, b) {
-            return a + b;
+    var add = function(a, b) {
+        return a + b;
+    };
+
+    console.log( add(1, 2) );
+
+
+
+    // Invocação, podem ser:
+    // método, função, construtor e aplicação
+
+
+
+    // Invocação por Método
+
+    var myObject = {
+        value: 0,
+        increment: function (inc) {
+            this.value += typeof inc === 'number' ? inc : 1;
+        }
+    };
+
+    myObject.increment();
+    document.writeln(myObject.value);
+    console.log( myObject.value ); // 1
+
+    myObject.increment(2);
+    document.writeln(myObject.value);
+    console.log( myObject.value ); // 3
+
+
+
+    // Invocação por função
+
+    // Invocada como função quando não é propriedade de um objeto
+
+    var sum = add(3, 4);
+    console.log( sum ); // 7
+
+    // Acrescenta em myObject um método double
+
+    myObject.double = function () {
+        var that = this; // Prevenindo o erro do this
+
+        var helper = function () {
+            that.value = add(that.value, that.value)
         };
 
-        console.log( add(1, 2) );
+        helper(); // Invoca helper como uma função
+    };
+
+    // Invoca double como um método
+
+    myObject.double();
+    document.writeln(myObject.getValue); // 7
 
 
 
-        // Invocação, podem ser:
-        // método, função, construtor e aplicação
+    // Invocação por construtor
+
+    // Cria uma função construtora chamada Quo.
+    // Ela cria um objeto com uma propriedade status.
+
+    // PS. Variável que será instanciada por new,
+    // por convenção iniciada com letra maiúscula
+
+    var Quo = function (string) {
+        this.status = string;
+    };
+
+    // Da a todas as intâncias do Quo um método público
+    // chamado get_status.
+
+    Quo.prototype.get_status = function () {
+        return this.status;
+    };
+
+    // Cria uma instancia de Quo.
+
+    var myQuo = new Quo("confused");
+
+    document.writeln(myQuo.get_status()); // confused
+    console.log( myQuo.get_status() );
 
 
 
-        // Invocação por Método
+    // Invocação por aplicação
 
-        var myObject = {
-            value: 0,
-            increment: function (inc) {
-                this.value += typeof inc === 'number' ? inc : 1;
+    // Cria uma matriz de 2 números e soma-os
+
+    var array = [1, 2];
+    var soma = add.apply(null, array); // 3
+    console.log( soma );
+
+    // Cria um objeto com um membro status.
+
+    var statusObject = {
+        status: "A-Ok"
+    };
+
+    // statusObject não herda de myObject.prototype
+    // mas podemos invocar o método get_status em
+    // statusObject embora ele não possua esse método.
+
+    var status = Quo.prototype.get_status.apply(statusObject);
+    console.log( status ); // A-Ok
+
+
+    // Argumentos
+
+    // Cria uma função que soma um monte de coisas
+
+    var sum = function () {
+        var i, sum = 0;
+        for (i = 0; i < arguments.length; i += 1) {
+            sum += arguments[i];
+        }
+        return sum;
+    };
+
+    document.writeln(sum(4, 8, 15, 16, 23, 42)); // 108
+
+    // Retorno
+
+    // O return força o retorno de algum valor no momento
+    // que ele é chamado, antes de chegar na chave de fechamento
+
+    // Exceções
+
+    // Exceção em uma função
+
+    var add = function (a, b) {
+        if (typeof a !== 'number' || typeof b !== 'number') {
+            throw {
+                name: 'TypeError',
+                message: 'add needs numbers'
             }
-        };
+        }
+        return a + b;
+    };
 
-        myObject.increment();
-        document.writeln(myObject.value);
-        console.log( myObject.value ); // 1
+    document.writeln( add(1, 2) );
+    // document.writeln( add(1, 'oi') );
 
-        myObject.increment(2);
-        document.writeln(myObject.value);
-        console.log( myObject.value ); // 3
+    // Cria uma função try_it que chama a nova função
+    // add incorretamente
 
+    var try_it = function () {
+        try {
+            add('seven');
+        } catch (e) {
+            document.writeln(e.name + ': ' + e.message);
+        }
+    };
 
-
-        // Invocação por função
-
-        // Invocada como função quando não é propriedade de um objeto
-
-        var sum = add(3, 4);
-        console.log( sum ); // 7
-
-        // Acrescenta em myObject um método double
-
-        myObject.double = function () {
-            var that = this; // Prevenindo o erro do this
-
-            var helper = function () {
-                that.value = add(that.value, that.value)
-            };
-
-            helper(); // Invoca helper como uma função
-        };
-
-        // Invoca double como um método
-
-        myObject.double();
-        document.writeln(myObject.getValue); // 7
+    try_it();
 
 
 
-        // Invocação por construtor
+    // Ampliando tipos
 
-        // Cria uma função construtora chamada Quo.
-        // Ela cria um objeto com uma propriedade status.
+    // Procedimento para criar métodos sem .prototype
 
-        // PS. Variável que será instanciada por new,
-        // por convenção iniciada com letra maiúscula
+    Function.prototype.method = function (name, func) {
+        this.prototype[name] = func;
+        return this;
+    };
 
-        var Quo = function (string) {
-            this.status = string;
-        };
+    // Um tipo inteiro para javascript
 
-        // Da a todas as intâncias do Quo um método público
-        // chamado get_status.
+    Number.method('integer', function () {
+        return Math[this < 0 ? 'ceil' : 'floor'](this);
+    });
 
-        Quo.prototype.get_status = function () {
-            return this.status;
-        };
+    document.writeln((-10 / 3).integer()); // -3
 
-        // Cria uma instancia de Quo.
+    // Criando um método trim
+    // Remove espaços em branco, antes e depois da string
 
-        var myQuo = new Quo("confused");
+    String.method('trim', function () {
+        return this.replace(/^\s+|\s+$/g, '');
+    });
 
-        document.writeln(myQuo.get_status()); // confused
-        console.log( myQuo.get_status() );
+    // Sem trim
+    document.writeln('"' + " nest " + '"'); // " nest "
 
+    // Com trim
+    document.writeln('"' + "   nest   ".trim() + '"'); // "nest"
 
+    // Acrescenta um método condicionalmente.
 
-        // Invocação por aplicação
+    // Melhoramento do procedimento para criação de métodos
+    // Só acrescenta o método se ele não existir para o objeto
 
-        // Cria uma matriz de 2 números e soma-os
-
-        var array = [1, 2];
-        var soma = add.apply(null, array); // 3
-        console.log( soma );
-
-        // Cria um objeto com um membro status.
-
-        var statusObject = {
-            status: "A-Ok"
-        };
-
-        // statusObject não herda de myObject.prototype
-        // mas podemos invocar o método get_status em
-        // statusObject embora ele não possua esse método.
-
-        var status = Quo.prototype.get_status.apply(statusObject);
-        console.log( status ); // A-Ok
-        
-        
-        // Argumentos
-        
-        // Cria uma função que soma um monte de coisas
-        
-        var sum = function () {
-            var i, sum = 0;
-            for (i = 0; i < arguments.length; i += 1) {
-                sum += arguments[i];
-            }
-            return sum;
-        };
-        
-        document.writeln(sum(4, 8, 15, 16, 23, 42)); // 108
-        
-        // Retorno
-        
-        // O return força o retorno de algum valor no momento
-        // que ele é chamado, antes de chegar na chave de fechamento
-        
-        // Exceções
-        
-        // Exceção em uma função
-        
-        var add = function (a, b) {
-            if (typeof a !== 'number' || typeof b !== 'number') {
-                throw {
-                    name: 'TypeError',
-                    message: 'add needs numbers',
-                }
-            }
-            return a + b;
-        };
-        
-        document.writeln( add(1, 2) );
-        // document.writeln( add(1, 'oi') );
-        
-        // Cria uma função try_it que chama a nova função
-        // add incorretamente
-        
-        var try_it = function () {
-            try {
-                add('seven');
-            } catch (e) {
-                document.writeln(e.name + ': ' + e.message);
-            }
-        };
-        
-        try_it();
-        
-        
-        
-        // Ampliando tipos
-        
-        // Procedimento para criar métodos sem .prototype
-        
-        Function.prototype.method = function (name, func) {
+    Function.prototype.method = function (name, func) {
+        if (!this.prototype[name]) {
             this.prototype[name] = func;
-            return this;
-        };
-        
-        // Um tipo inteiro para javascript
-        
-        Number.method('integer', function () {
-            return Math[this < 0 ? 'ceil' : 'floor'](this);
-        });
-        
-        document.writeln((-10 / 3).integer()); // -3
-        
-        // Criando um método trim
-        // Remove espaços em branco, antes e depois da string
-        
-        String.method('trim', function () {
-            return this.replace(/^\s+|\s+$/g, '');
-        });
-        
-        // Sem trim
-        document.writeln('"' + " nest " + '"'); // " nest "
-        
-        // Com trim
-        document.writeln('"' + "   nest   ".trim() + '"'); // "nest"
-        
-        // Acrescenta um método condicionalmente.
-        
-        // Melhoramento do procedimento para criação de métodos
-        // Só acrescenta o método se ele não existir para o objeto
-        
-        Function.prototype.method = function (name, func) {
-            if (!this.prototype[name]) {
-                this.prototype[name] = func;
+        }
+    };
+
+    // Test com trim
+    String.method('trim', function () {
+        return this
+    });
+
+    // CO método não é alterado
+    document.writeln('"' + "   nest   ".trim() + '"'); // "nest"
+
+
+
+    // Recursividade
+
+    // Torre de Hanoi
+
+    var hanoi = function (disc, src, aux, dst) {
+        if (disc > 0) {
+            hanoi(disc - 1, src, dst, aux);
+            document.writeln('<br />Move disc ' + disc + ' from ' + src + ' to ' + dst);
+            hanoi(disc - 1, aux, src, dst);
+        }
+    };
+
+    hanoi(3, 'Origin', 'Aux', 'Destiny');
+
+    // Função walk_the_DOM - Passa por todos os nós das árvore
+    // na ordem do arquivo fonte do HTML
+
+    var walk_the_DOM = function walk (node, func) {
+        func(node);
+        node = node.firstChild;
+        while (node) {
+            walk(node, func);
+            node = node.nextSibling;
+        }
+    };
+
+    // getElementsByAttribute - Recebe uma string com o nome do atributo e um valor opcional
+
+    var getElementsByAttribute = function (att, value) {
+        var results;
+
+        walk_the_DOM(document.body, function(node){
+            var actual = node.nodeType === 1 && node.getAttribute(att);
+            if (typeof actual === 'string' && (actual === value || typeof  value !== 'string')) {
+                results.push(node);
             }
-        };
-        
-        // Test com trim
-        String.method('trim', function () {
-            return this
         });
-        
-        // CO método não é alterado
-        document.writeln('"' + "   nest   ".trim() + '"'); // "nest"
+
+        return results;
+    };
+
+    // Cria uma função fatorial com trilha de recursividade
+
+    var factorial = function factorial (i, a) {
+        a = a || 1;
+        if (i < 2) {
+            return a;
+        }
+        return factorial(i - 1, a * i);
+    };
+
+    document.writeln('<br />' + factorial(4)); // 24
     
     </script>
 </head>
