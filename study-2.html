@@ -270,6 +270,89 @@
     };
 
     document.writeln('<br />' + factorial(4)); // 24
+
+
+
+    // Escopo
+
+    var foo = function () {
+        var a = 3, b = 5;
+
+        var bar = function () {
+            var b = 7, c = 11;
+
+            // Nesse ponto, a contém 3, b 7 e c 11
+            console.log(a + ' ' + b + ' ' + c);
+
+        };
+
+        // Nesse ponto, a contém 3, b 5 e c não está definido
+        console.log(a + ' ' + b);
+
+        bar();
+
+        // Nesse ponto, a contém 21 e b 5
+        console.log(a + ' ' + b);
+
+    };
+
+    // Invocando a função para ver as saídas
+
+    foo();
+
+
+
+    // Fechamento
+
+    // myObject2 com atributos privados
+
+    var myObject2 = function () {
+        var value = 0;
+        return {
+            increment: function (inc) {
+                value += typeof inc === 'number' ? inc : 1;
+            },
+            getValue: function () {
+                return value;
+            }
+        }
+    }();
+
+    // Cria uma função geradora chamada quo. Ela cria um
+    // objeto com um método get_status e uma propriedade
+    // status privada.
+
+    var quo = function (status) {
+        return {
+            get_status: function () {
+                return status;
+            }
+        };
+    };
+
+    // Cria uma instancia de quo
+
+    var myQuo2 = quo('amazed');
+
+    document.writeln(myQuo2.get_status());
+
+    // Define um código que estabelece uma cor em um nó no DOM
+    // Ex. Amarelo, e então o transforma em branco.
+
+    var fade = function (node) {
+        var level = 1;
+        var step = function () {
+            var hex = level.toString(16);
+            node.style.backgroundColor = '#FFFF' + hex + hex;
+            if (level < 15) {
+                level += 1;
+                setTimeout(step, 100);
+            }
+        };
+        setTimeout(step, 100);
+    };
+
+    fade(document.body);
     
     </script>
 </head>
