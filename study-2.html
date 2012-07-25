@@ -353,6 +353,105 @@
     };
 
     fade(document.body);
+
+    // Exemplo ruim
+
+    var add_the_handlers = function (nodes) {
+        var i;
+        for (i = 0; i < nodes.length; i += 1) {
+            nodes[i].onclick = function (e) {
+                console.log(i);
+            }
+        }
+    };
+
+    // Exemplo melhor
+
+    var add_the_handlers_2 = function (nodes) {
+        var i;
+        for (i = 0; i < nodes.length; i += 1) {
+            nodes[i].onclick = function (i) {
+                return function (e) {
+                    console.log(i);
+                };
+            }(i);
+        }
+    };
+
+
+
+    // Funções de chamada de retorno
+
+    // Modo ingenuo
+
+    // request = prepare_the_request();
+    // response = send_request_synchronously(request);
+    // display(response);
+
+    // Modo melhor
+
+    // request = prepare_the_request();
+    // send_request_asynchronously(request, function (response) {
+    //     display(response);
+    // });
+
+
+
+    // Módulos
+
+    // Extendendo a string
+
+    String.method('deentityify', function () {
+
+        // Tabela de entidades: Mapeia nomes de entidades para caracteres.
+        var entity = {
+            quot: '"',
+            lt: '<',
+            gt: '>'
+        };
+
+        // Retorna o método deentityify.
+
+        return function () {
+            // método deentityify. faz a substituição de caracteres
+
+            return this.replace(/&([^&;]+);/g,
+                    function (a, b) {
+                        var r = entity[b];
+                        return typeof  r === 'string' ? r : a;
+                    }
+            );
+        }
+
+    }());
+
+    document.writeln('&lt;&quot;&gt;'.deentityify()); // <">
+
+    // Outro exemplo de utilização do padrão módulo
+
+    var serial_marker = function () {
+
+        var prefix = '';
+        var seq = 0;
+        return {
+            set_prefix: function (p) {
+                prefix = String(p);
+            },
+            set_seq: function (s) {
+                seq = s;
+            },
+            gemsym: function () {
+                var result = prefix + seq;
+                seq += 1;
+                return result
+            }
+        };
+    }();
+
+    serial_marker.set_prefix('Q');
+    serial_marker.set_seq(1000);
+    var unique = serial_marker.gemsym(); // squencia única: "Q1000"
+    console.log(unique);
     
     </script>
 </head>
