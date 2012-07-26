@@ -120,7 +120,7 @@
 
     // Cria uma função que soma um monte de coisas
 
-    var sum = function () {
+    var sum1 = function () {
         var i, sum = 0;
         for (i = 0; i < arguments.length; i += 1) {
             sum += arguments[i];
@@ -128,7 +128,7 @@
         return sum;
     };
 
-    document.writeln(sum(4, 8, 15, 16, 23, 42)); // 108
+    document.writeln(sum1(4, 8, 15, 16, 23, 42)); // 108
 
     // Retorno
 
@@ -139,7 +139,7 @@
 
     // Exceção em uma função
 
-    var add = function (a, b) {
+    var add1 = function (a, b) {
         if (typeof a !== 'number' || typeof b !== 'number') {
             throw {
                 name: 'TypeError',
@@ -149,7 +149,7 @@
         return a + b;
     };
 
-    document.writeln( add(1, 2) );
+    document.writeln( add1(1, 2) );
     // document.writeln( add(1, 'oi') );
 
     // Cria uma função try_it que chama a nova função
@@ -157,7 +157,7 @@
 
     var try_it = function () {
         try {
-            add('seven');
+            add1('seven');
         } catch (e) {
             document.writeln(e.name + ': ' + e.message);
         }
@@ -352,7 +352,7 @@
         setTimeout(step, 100);
     };
 
-    fade(document.body);
+    // fade(document.body);
 
     // Exemplo ruim
 
@@ -452,6 +452,30 @@
     serial_marker.set_seq(1000);
     var unique = serial_marker.gemsym(); // squencia única: "Q1000"
     console.log(unique);
+
+
+
+    // Cascata
+
+    // Exemplo: Funções devem retornar this ao invés de undefined
+    // para se utilizarem em cascata.
+    // getElement('myBox').move(350, 150).width(100) ...
+
+
+
+    // Curry
+
+    // Permite construir uma nova função combinando uma função e um argumento
+
+    Function.method('curry', function () {
+        var args = arguments, that = this;
+        return function () {
+            return that.apply(null, args.concat(arguments));
+        };
+    });
+
+    var add2 = add.curry(1);
+    //document.writeln(add2(6)); // 7
     
     </script>
 </head>
