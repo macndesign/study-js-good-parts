@@ -352,7 +352,7 @@
         setTimeout(step, 100);
     };
 
-    // fade(document.body);
+    fade(document.body);
 
     // Exemplo ruim
 
@@ -467,15 +467,92 @@
 
     // Permite construir uma nova função combinando uma função e um argumento
 
-    Function.method('curry', function () {
+    /*Function.method('curry', function () {
         var args = arguments, that = this;
         return function () {
             return that.apply(null, args.concat(arguments));
         };
+    });*/
+
+    Function.method('curry', function () {
+        var slice = Array.prototype.slice,
+            args = slice.apply(arguments),
+            that = this;
+        return function () {
+            return that.apply(null, args.concat(slice.apply(arguments)));
+        };
     });
 
     var add2 = add.curry(1);
-    //document.writeln(add2(6)); // 7
+    document.writeln(add2(6)); // 7
+
+
+
+    // Memorização
+
+    // Fib comum. Falha com uma grande quantidade de processamento
+
+    document.writeln('<br>Fib. sem memorização');
+
+    var fibonacci = function (n) {
+        return n < 2 ? n : fibonacci(n - 1) + fibonacci(n - 2);
+    };
+
+    // Executando:
+
+    var i1;
+    for (i1 = 0; i1 <= 10; i1 += 1) {
+        document.writeln('<br>// '+ i1 + ': ' + fibonacci(i1));
+    }
+
+    // Fibonacci com memorização
+    document.writeln('<br>Fib. com memorização');
+
+    var fibonacci_memo = function () {
+        var memo = [0, 1];
+        var fib = function (n) {
+            var result = memo[n];
+            if (typeof result !== 'number') {
+                result = fib(n -1) + fib(n - 2);
+                memo[n] = result;
+            }
+            return result;
+        };
+        return fib;
+    }();
+
+    // Função memoizer
+
+    var memoizer = function (memo, fundamental) {
+        var shell = function (n) {
+            var result = memo[n];
+            if (typeof result !== 'number') {
+                result = fundamental(shell, n);
+                memo[n] = result;
+            }
+            return result;
+        };
+        return shell;
+    };
+
+    var fibonacci_with_memoizer = memoizer([0, 1], function(shell, n){
+        return shell(n - 1) + shell(n - 2);
+    });
+
+    var i2;
+    for (i2 = 0; i2 <= 10; i2 += 1){
+        document.writeln('<br>' + fibonacci_with_memoizer(i2));
+    }
+
+    // Utilizar o memoizer facilmente em outras funções
+    document.writeln('<br>Fatorial com memorização');
+
+    var factorial2 = memoizer([1, 1], function (shell, n){
+        return n * shell(n - 1);
+    });
+
+    document.writeln('<br>' + factorial2(4));
+
     
     </script>
 </head>
